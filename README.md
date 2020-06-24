@@ -1,8 +1,6 @@
 # TP Seguridad en Redes - UTN - FRBA
 
- 1º Cuat. 2020
-
-Grupo 03 - Simulación - UTN - FRBA
+Grupo 02 -  1º Cuat. 2020
 
 ## Integrantes
 
