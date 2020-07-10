@@ -56,7 +56,7 @@ jobs:
         image-ref: 'docker.io/nahueloyha/tp-sr:${{ github.sha }}'
         exit-code: '1'
         ignore-unfixed: true
-        severity: 'CRITICAL'
+        severity: 'HIGH,CRITICAL'
 
     # # Runs a single command using the runners shell
     # - name: Run a one-line script
