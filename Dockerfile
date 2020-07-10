@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:latest
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -11,7 +11,7 @@ RUN npm install
 # RUN npm ci --only=production
 
 # Bundle app source
-COPY app .
+COPY app/ .
 
 EXPOSE 8080
-CMD [ "node", "app/index.js" ]
+CMD [ "node", "index.js" ]
