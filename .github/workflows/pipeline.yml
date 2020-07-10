@@ -29,16 +29,17 @@ jobs:
     - name: Run a one-line script
       run: echo Hello, world!
 
-    # Busca secrets
-    - name: Secret Detector -> Yelp
-      uses: evanextreme/detect-secrets-action@1.0.0
-
-
-    - name: Secret Detector -> Trufflehog
-      uses: edplato/trufflehog-actions-scan@v0.9i-beta
-
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@v1.3
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     # Lintea Dockerfile
-    - name: Hadolint Action
+    - name: Dockerfile Linter -> Hadolint
       uses: brpaz/hadolint-action@v1.1.0
+
+    # Busca secrets
+    - name: Secret Detector -> Trufflehog
+      uses: edplato/trufflehog-actions-scan@v0.9i-beta
 
