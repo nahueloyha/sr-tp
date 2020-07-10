@@ -29,11 +29,11 @@ jobs:
     - name: Run a one-line script
       run: echo Hello, world!
 
-    - name: Secret Scan
-      uses: max/secret-scan@1.0.0
+    - name: Secret Detector -> Trufflehog
+      uses: edplato/trufflehog-actions-scan@v0.9i-beta
 
     # Busca secrets
-    - name: Secret Detector
+    - name: Secret Detector -> Yelp
       uses: evanextreme/detect-secrets-action@1.0.0
 
     # Lintea Dockerfile
