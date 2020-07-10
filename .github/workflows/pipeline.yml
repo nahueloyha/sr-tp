@@ -29,5 +29,11 @@ jobs:
     - name: Run a one-line script
       run: echo Hello, world!
 
+    # Lintea Dockerfile
     - name: Hadolint Action
       uses: brpaz/hadolint-action@v1.1.0
+
+    # Busca secrets
+    - name: Secret Detector
+      uses: evanextreme/detect-secrets-action@1.0.0
+
