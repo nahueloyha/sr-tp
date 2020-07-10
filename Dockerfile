@@ -1,14 +1,17 @@
-# This is a sample Dockerfile with a couple of problems.
-# Paste your Dockerfile here.
+FROM node:12
 
-FROM ubuntu:latest
-RUN apt-get update && \
-    apt-get install -y make nasm && \
-    rm -rf /var/lib/apt/lists/*
+# Create app directory
+WORKDIR /usr/src/app
 
-WORKDIR /usr/src/hello
-copy . /usr/src/hello
+# Install app dependencies
+COPY package*.json ./
 
-RUN make clean hello test
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
 
-CMD ["./hello"]
+# Bundle app source
+COPY app .
+
+EXPOSE 8080
+CMD [ "node", "app/index.js" ]

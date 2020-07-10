@@ -1,0 +1,18 @@
+{
+  "name": "tp-sr",
+  "version": "1.0.0",
+  "description": "TP Seguridad en Redes",
+  "author": "Nahuel Oyhanarte <noyhanarte@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nahueloyha/sr-tp.git"
+  },
+  "license": "GPL-3.0-or-later",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app/index.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+}
