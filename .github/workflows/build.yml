@@ -33,7 +33,7 @@ jobs:
     # 1.a) Dockerfile Linter -> HadoLint
     - name: "1.a) Dockerfile Linter -> HadoLint"
       uses: brpaz/hadolint-action@v1.1.0
-# 
+
     # 1.b) Image Scanning -> Trivy
     - name: "1.a) Image Scanning -> Trivy"
       uses: aquasecurity/trivy-action@0.0.7
