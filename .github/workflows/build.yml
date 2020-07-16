@@ -47,7 +47,7 @@ jobs:
     - name: "2.a) Secrets Detection -> TruffleHog"
       uses: edplato/trufflehog-actions-scan@v0.9i-beta
       with: 
-        scanArguments: "--regex --branch=development  --max_depth=1"
+        scanArguments: "--regex --branch=development --max_depth=1"
   
     # 2.b) Software Composition Analysis (SCA) -> Synk
     - name: "2.b) Software Composition Analysis (SCA) -> Synk"
@@ -61,3 +61,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        

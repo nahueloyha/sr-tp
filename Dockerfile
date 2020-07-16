@@ -1,4 +1,4 @@
-FROM node:14 
+FROM node:14
 # FIX: cambiar node:latest por node:14
 
 # Create app directory
