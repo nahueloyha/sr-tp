@@ -47,7 +47,7 @@ jobs:
     - name: "2.a) Secrets Detection -> TruffleHog"
       uses: edplato/trufflehog-actions-scan@v0.9i-beta
       with: 
-        scanArguments: "--regex --branch=develop --max_depth=1"
+        scanArguments: "--regex --max_depth=1"
   
     # 2.a) Secrets Detection -> Gitleaks
     # - name: Gitleaks
