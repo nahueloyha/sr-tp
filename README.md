@@ -1,4 +1,5 @@
-![Pipeline](https://github.com/nahueloyha/sr-tp/workflows/Pipeline/badge.svg?branch=master)
+![build](https://github.com/nahueloyha/sr-tp/workflows/build/badge.svg?branch=master)
+![deploy](https://github.com/nahueloyha/sr-tp/workflows/deploy/badge.svg?branch=master)
 
 # TP Seguridad en Redes - UTN - FRBA
 
