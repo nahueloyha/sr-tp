@@ -18,7 +18,7 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v2
       with:
-        fetch-depth: '2'
+        fetch-depth: '1'
 
     # Install dependencies
     - name: Install dependencies
@@ -47,7 +47,7 @@ jobs:
     - name: "2.a) Secrets Detection -> TruffleHog"
       uses: edplato/trufflehog-actions-scan@v0.9i-beta
       with: 
-        scanArguments: "--regex --branch=development --max_depth=1"
+        scanArguments: "--regex --branch=development  --max_depth=1"
   
     # 2.a) Secrets Detection -> Gitleaks
     # - name: Gitleaks
