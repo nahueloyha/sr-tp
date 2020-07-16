@@ -20,6 +20,8 @@ jobs:
     # Checkout the repository
     - name: Checkout the repository
       uses: actions/checkout@v2
+      with:
+        fetch-depth: '2'
 
     # Install dependencies
     - name: Install dependencies -> Go
