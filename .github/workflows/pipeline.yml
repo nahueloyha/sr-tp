@@ -33,13 +33,13 @@ jobs:
       env:
         cache-name: trivy-cache
       with:
-        path: dbcache/
+        path: ./tmp/dbcache/
         key: trivy-cache
 
     - name: Run Trivy
       run:  |
-        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sh -s -- -b /usr/local/bin
-        ./trivy --exit-code 1 --severity CRITICAL --cache-dir dbcache/ docker.io/nahueloyha/tp-sr:${{ github.sha }} 
+        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sh -s -- -b ./tmp
+        ./tmp/trivy --exit-code 1 --severity CRITICAL --cache-dir ./tmp/dbcache/ docker.io/nahueloyha/tp-sr:${{ github.sha }} 
         
     # Build docker image
     - name: Build docker image
