@@ -1,0 +1,59 @@
+# Workflow name
+name: deploy
+
+# Controls when the action will run
+on:
+  push:
+    branches:
+      - master
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: '2'
+
+    # Build docker image
+    - name: Build docker image
+      run: docker build -t docker.io/nahueloyha/sr-tp:${{ github.sha }} .
+
+    # Push docker image to Docker Hub
+    - name: Push Docker image
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: nahueloyha/sr-tp
+        username: nahueloyha
+        password: ${{ secrets.DOCKER_TOKEN }}
+        tags: ${{ github.sha }}
+
+    # Configure AWS credentials
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    # Update AWS ECS Task Definition 
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: sr-tp-container
+        image: nahueloyha/sr-tp:${{ github.sha }}
+
+    # Deploy new AWS ECS Task Definition   
+    - name: Update AWS ECS with new Docker image
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: sr-tp-service
+        cluster: sr-tp-cluster

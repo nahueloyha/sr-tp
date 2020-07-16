@@ -1,0 +1,71 @@
+# Workflow name
+name: build
+
+# Controls when the action will run
+on:
+  pull_request:
+    branches:
+      - master
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: '2'
+
+    # Install dependencies
+    - name: Install dependencies
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.14
+
+    # Build docker image
+    - name: Build docker image
+      run: docker build -t docker.io/nahueloyha/sr-tp:${{ github.sha }} .
+
+    # 1.a) Dockerfile Linter -> HadoLint
+    - name: "1.a) Dockerfile Linter -> HadoLint"
+      uses: brpaz/hadolint-action@v1.1.0
+# 
+    # 1.b) Image Scanning -> Trivy
+    - name: "1.a) Image Scanning -> Trivy"
+      uses: aquasecurity/trivy-action@0.0.7
+      with:
+        image-ref: 'docker.io/nahueloyha/sr-tp:${{ github.sha }}'
+        exit-code: '1'
+        ignore-unfixed: true
+        severity: 'CRITICAL' # FIX: quitar HIGH
+
+    # 2.a) Secrets Detection -> TruffleHog
+    - name: "2.a) Secrets Detection -> TruffleHog"
+      uses: edplato/trufflehog-actions-scan@v0.9i-beta
+      with: 
+        scanArguments: "--regex --branch=develop --max_depth=1"
+  
+    # 2.a) Secrets Detection -> Gitleaks
+    # - name: Gitleaks
+    # uses: zricethezav/gitleaks-action@v1.1.2
+
+    # 2.a) Secrets Detection -> Secrets Detector
+    # - name: "2.a) Secrets Detection -> Secrets Detector"
+    #  uses: evanextreme/detect-secrets-action@1.0.0
+
+    # 2.b) Software Composition Analysis (SCA) -> Synk
+    - name: "2.b) Software Composition Analysis (SCA) -> Synk"
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    
+    # 2.c) Static Application Security Testing (SAST) -> SonarCloud
+    - name: "2.c) Static Application Security Testing (SAST) -> SonarCloud"
+      uses: SonarSource/sonarcloud-github-action@v1.3
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
