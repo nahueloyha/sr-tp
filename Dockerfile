@@ -1,5 +1,5 @@
 FROM node:14 
-# FROM node:latest
+# FIX: cambiar node:latest por node:14
 
 # Create app directory
 WORKDIR /usr/src/app

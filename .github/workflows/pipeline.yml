@@ -51,7 +51,7 @@ jobs:
         image-ref: 'docker.io/nahueloyha/tp-sr:${{ github.sha }}'
         exit-code: '1'
         ignore-unfixed: true
-        severity: 'HIGH,CRITICAL'
+        severity: 'CRITICAL' # FIX: quitar HIGH
 
     # 2.a) Secrets Detection -> TruffleHog
     - name: "2.a) Secrets Detection -> TruffleHog"
@@ -69,3 +69,12 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    
+    # Push docker image
+    - name: Push docker image
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: nahueloyha/sr-tp
+        username: nahueloyha
+        password: ${{ secrets.DOCKER_TOKEN }}
+        tags: ${{ github.sha }}
