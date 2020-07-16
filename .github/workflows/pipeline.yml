@@ -12,13 +12,10 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
     name: build
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checkout the repository
     - name: Checkout the repository
@@ -30,25 +27,6 @@ jobs:
       with:
         go-version: 1.14
 
-    # # Search for secrets
-    # - name: Search for secrets -> Trufflehog
-    #   uses: edplato/trufflehog-actions-scan@v0.9i-beta
-
-    # # Lint Dockerfile
-    # - name: Lint Dockerfile -> Hadolint
-    #   uses: brpaz/hadolint-action@v1.1.0
-
-    # Build docker image
-    - name: Build docker image
-      run: docker build -t docker.io/nahueloyha/tp-sr:${{ github.sha }} .
-
-    # # Scan for vulnerabilities -> SonarCloud
-    # - name: Scan for vulnerabilities -> SonarCloud
-    #   uses: SonarSource/sonarcloud-github-action@v1.3
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
     # Cache Trivy Database
     - name: Cache Trivy database
       uses: actions/cache@v2
@@ -56,10 +34,18 @@ jobs:
         cache-name: cache-trivy
       with:
         path: /var/lib/trivy
-        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        key: ${{ runner.os }}
 
-    # Scan for vulnerabilities -> Trivy
-    - name: Scan for vulnerabilities -> Trivy
+    # Build docker image
+    - name: Build docker image
+      run: docker build -t docker.io/nahueloyha/tp-sr:${{ github.sha }} .
+
+    # 1.a) Dockerfile Linter -> HadoLint
+    - name: "1.a) Dockerfile Linter -> HadoLint"
+      uses: brpaz/hadolint-action@v1.1.0
+
+    # 1.b) Image Scanning -> Trivy
+    - name: "1.a) Image Scanning -> Trivy"
       uses: aquasecurity/trivy-action@0.0.7
       with:
         image-ref: 'docker.io/nahueloyha/tp-sr:${{ github.sha }}'
@@ -67,8 +53,19 @@ jobs:
         ignore-unfixed: true
         severity: 'HIGH,CRITICAL'
 
+    # 2.a) Secrets Detection -> TruffleHog
+    - name: "2.a) Secrets Detection -> TruffleHog"
+      uses: edplato/trufflehog-actions-scan@v0.9i-beta
 
-
-    # # Runs a single command using the runners shell
-    # - name: Run a one-line script
-    #   run: echo Hello, world!
+    # 2.b) Software Composition Analysis (SCA) -> Synk
+    - name: "2.b) Software Composition Analysis (SCA) -> Synk"
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    
+    # 2.c) Static Application Security Testing (SAST) -> SonarCloud
+    - name: "2.c) Static Application Security Testing (SAST) -> SonarCloud"
+      uses: SonarSource/sonarcloud-github-action@v1.3
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
