@@ -11,8 +11,8 @@ const app = express();
 app.use(express.static('assets'));
 
 app.get('/', (req, res) => {
-  res.send('<h1 style="text-aling:center"> Seguridad en Redes - UTN - FRBA </h1>' );
-  // res.send('<h1 style="text-aling:center"> Seguridad en Redes - UTN - FRBA </h1> <img src="portada.png" alt="Portada TP SR" />' );
+  //res.send('<h1 style="text-aling:center"> Seguridad en Redes - UTN - FRBA </h1>' );
+  res.send('<h1 style="text-aling:center"> Seguridad en Redes - UTN - FRBA </h1> <img src="portada.png" alt="Portada TP SR" />' );
 });
 
 app.listen(PORT, HOST);
