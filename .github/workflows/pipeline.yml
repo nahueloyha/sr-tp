@@ -27,20 +27,6 @@ jobs:
       with:
         go-version: 1.14
 
-    # Cache Trivy Database
-    - name: Cache Trivy database
-      uses: actions/cache@v2
-      env:
-        cache-name: trivy-cache
-      with:
-        path: ./tmp/dbcache/
-        key: trivy-cache
-
-    - name: Run Trivy
-      run:  |
-        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sh -s -- -b ./tmp
-        ./tmp/trivy --exit-code 1 --severity CRITICAL --cache-dir ./tmp/dbcache/ docker.io/nahueloyha/tp-sr:${{ github.sha }} 
-        
     # Build docker image
     - name: Build docker image
       run: docker build -t docker.io/nahueloyha/tp-sr:${{ github.sha }} .
@@ -62,7 +48,7 @@ jobs:
     - name: "2.a) Secrets Detection -> TruffleHog"
       uses: edplato/trufflehog-actions-scan@v0.9i-beta
       with: 
-          scanArguments: "--regex --entropy=False --max_depth=1 --rules /regexes.json"
+        scanArguments: "--regex --entropy=False --max_depth=1 --rules /regexes.json"
 
     # 2.b) Software Composition Analysis (SCA) -> Synk
     - name: "2.b) Software Composition Analysis (SCA) -> Synk"
