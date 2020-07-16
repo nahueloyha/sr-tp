@@ -1,5 +1,5 @@
 # Workflow name
-name: CI
+name: Pipeline
 
 # Controls when the action will run
 on:
