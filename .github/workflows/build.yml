@@ -41,7 +41,7 @@ jobs:
         image-ref: 'docker.io/nahueloyha/sr-tp:${{ github.sha }}'
         exit-code: '1'
         ignore-unfixed: true
-        severity: 'HIGH,CRITICAL' # FIX: quitar HIGH
+        severity: 'CRITICAL' # FIX: quitar HIGH
 
     # 2.a) Secrets Detection -> TruffleHog
     - name: "2.a) Secrets Detection -> TruffleHog"
