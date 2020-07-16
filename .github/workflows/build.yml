@@ -10,7 +10,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
-    name: build
+    name: build-development
     runs-on: ubuntu-latest
 
     steps:
@@ -47,7 +47,7 @@ jobs:
     - name: "2.a) Secrets Detection -> TruffleHog"
       uses: edplato/trufflehog-actions-scan@v0.9i-beta
       with: 
-        scanArguments: "--regex --branch=${{ github.ref }} --max_depth=1"
+        scanArguments: "--regex --branch=development --max_depth=1"
   
     # 2.a) Secrets Detection -> Gitleaks
     # - name: Gitleaks
