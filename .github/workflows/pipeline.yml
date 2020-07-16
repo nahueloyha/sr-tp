@@ -31,10 +31,10 @@ jobs:
     - name: Cache Trivy database
       uses: actions/cache@v2
       env:
-        cache-name: cache-trivy
+        cache-name: trivy-cache
       with:
         path: /var/lib/trivy
-        key: ${{ runner.os }}
+        key: trivy-cache
 
     # Build docker image
     - name: Build docker image
