@@ -65,7 +65,7 @@ jobs:
     - name: "2.a) Secrets Detection -> TruffleHog"
       uses: edplato/trufflehog-actions-scan@v0.9i-beta
       with: 
-          scanArguments: "--max_depth=1"
+          scanArguments: "--regex --entropy=False --max_depth=5 --rules /regexes.json"
 
     # 2.b) Software Composition Analysis (SCA) -> Synk
     - name: "2.b) Software Composition Analysis (SCA) -> Synk"
