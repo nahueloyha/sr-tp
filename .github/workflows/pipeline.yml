@@ -45,10 +45,14 @@ jobs:
         severity: 'CRITICAL' # FIX: quitar HIGH
 
     # 2.a) Secrets Detection -> TruffleHog
-    - name: "2.a) Secrets Detection -> TruffleHog"
-      uses: edplato/trufflehog-actions-scan@v0.9i-beta
-      with: 
-        scanArguments: "--regex --entropy=False --max_depth=1 --rules /regexes.json"
+    # - name: "2.a) Secrets Detection -> TruffleHog"
+      # uses: edplato/trufflehog-actions-scan@v0.9i-beta
+      # with: 
+        # scanArguments: "--regex --entropy=False --max_depth=1 --rules /regexes.json"
+# 
+    - name: Secret Detector
+      uses: evanextreme/detect-secrets-action@1.0.0
+
 
     # 2.b) Software Composition Analysis (SCA) -> Synk
     - name: "2.b) Software Composition Analysis (SCA) -> Synk"
