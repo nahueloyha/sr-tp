@@ -1,16 +1,16 @@
-# TP Seguridad en Redes - UTN - FRBA
-
 ![Pipeline](https://github.com/nahueloyha/sr-tp/workflows/Pipeline/badge.svg?branch=master)
+
+# TP Seguridad en Redes - UTN - FRBA
 
 Grupo 02 -  1º Cuat. 2020
 
 ## Integrantes
 
-Nombre | Padrón | Mail |
+Nombre | Legajo | Mail |
 :---: | :---: | :---: |
 Julian Simplituca | ### | simplijulian@gmail.com |
 Kevin Varela | ### | kevenvarela@gmail.com |
-Nahuel Oyhanarte | ### | ### |
+Nahuel Oyhanarte | ### | noyhanarte@gmail.com |
 
 ## Instrucciones
 
@@ -23,5 +23,6 @@ Para desarrollar local:
 
 Una vez testeado:
 
-* Deploy: `git add && git commit -m "deploy" && git push` (dispara pipeline CI/CD [acá](https://github.com/nahueloyha/sr-tp/actions))
+* Deploy: `git add && git commit -m "deploy" && git push` 
+* Build: automático con el pipeline CI/CD [acá](https://github.com/nahueloyha/sr-tp/actions))
 * Access: [https://sr-tp.nahueloyha.com/](https://sr-tp.nahueloyha.com)

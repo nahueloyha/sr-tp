@@ -31,74 +31,72 @@ jobs:
     - name: Build docker image
       run: docker build -t docker.io/nahueloyha/sr-tp:${{ github.sha }} .
 
-    # 1.a) Dockerfile Linter -> HadoLint
-    - name: "1.a) Dockerfile Linter -> HadoLint"
-      uses: brpaz/hadolint-action@v1.1.0
+    # # 1.a) Dockerfile Linter -> HadoLint
+    # - name: "1.a) Dockerfile Linter -> HadoLint"
+    #   uses: brpaz/hadolint-action@v1.1.0
 
-    # 1.b) Image Scanning -> Trivy
-    - name: "1.a) Image Scanning -> Trivy"
-      uses: aquasecurity/trivy-action@0.0.7
-      with:
-        image-ref: 'docker.io/nahueloyha/sr-tp:${{ github.sha }}'
-        exit-code: '1'
-        ignore-unfixed: true
-        severity: 'CRITICAL' # FIX: quitar HIGH
+    # # 1.b) Image Scanning -> Trivy
+    # - name: "1.a) Image Scanning -> Trivy"
+    #   uses: aquasecurity/trivy-action@0.0.7
+    #   with:
+    #     image-ref: 'docker.io/nahueloyha/sr-tp:${{ github.sha }}'
+    #     exit-code: '1'
+    #     ignore-unfixed: true
+    #     severity: 'CRITICAL' # FIX: quitar HIGH
 
     # 2.a) Secrets Detection -> TruffleHog
-    # - name: "2.a) Secrets Detection -> TruffleHog"
-      # uses: edplato/trufflehog-actions-scan@v0.9i-beta
-      # with: 
-        # scanArguments: "--regex --entropy=False --max_depth=1 --rules /regexes.json"
-# 
-    - name: Secret Detector
-      uses: evanextreme/detect-secrets-action@1.0.0
-
-
-    # 2.b) Software Composition Analysis (SCA) -> Synk
-    - name: "2.b) Software Composition Analysis (SCA) -> Synk"
-      uses: snyk/actions/node@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     
-    # 2.c) Static Application Security Testing (SAST) -> SonarCloud
-    - name: "2.c) Static Application Security Testing (SAST) -> SonarCloud"
-      uses: SonarSource/sonarcloud-github-action@v1.3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: "2.a) Secrets Detection -> TruffleHog"
+      uses: edplato/trufflehog-actions-scan@v0.9i-beta
+      with: 
+        scanArguments: "--regex --entropy=False --max_depth=1 --rules /regexes.json"
+
+    # - name: Secret Detector
+      # uses: evanextreme/detect-secrets-action@1.0.0
+
+    # # 2.b) Software Composition Analysis (SCA) -> Synk
+    # - name: "2.b) Software Composition Analysis (SCA) -> Synk"
+    #   uses: snyk/actions/node@master
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     
-    # Push docker image to Docker Hub
-    - name: Push Docker image
-      uses: elgohr/Publish-Docker-Github-Action@master
-      with:
-        name: nahueloyha/sr-tp
-        username: nahueloyha
-        password: ${{ secrets.DOCKER_TOKEN }}
-        tags: ${{ github.sha }}
-
-    # Configure AWS credentials
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
-
-    # Update AWS ECS Task Definition 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: task-definition.json
-        container-name: sr-tp-container
-        image: nahueloyha/sr-tp:${{ github.sha }}
-
-    # Deploy new AWS ECS Task Definition   
-    - name: Update AWS ECS with new Docker image
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: sr-tp-service
-        cluster: sr-tp-cluster
-
+    # # 2.c) Static Application Security Testing (SAST) -> SonarCloud
+    # - name: "2.c) Static Application Security Testing (SAST) -> SonarCloud"
+    #   uses: SonarSource/sonarcloud-github-action@v1.3
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     
+    # # Push docker image to Docker Hub
+    # - name: Push Docker image
+    #   uses: elgohr/Publish-Docker-Github-Action@master
+    #   with:
+    #     name: nahueloyha/sr-tp
+    #     username: nahueloyha
+    #     password: ${{ secrets.DOCKER_TOKEN }}
+    #     tags: ${{ github.sha }}
+
+    # # Configure AWS credentials
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: us-east-1
+
+    # # Update AWS ECS Task Definition 
+    # - name: Fill in the new image ID in the Amazon ECS task definition
+    #   id: task-def
+    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+    #   with:
+    #     task-definition: task-definition.json
+    #     container-name: sr-tp-container
+    #     image: nahueloyha/sr-tp:${{ github.sha }}
+
+    # # Deploy new AWS ECS Task Definition   
+    # - name: Update AWS ECS with new Docker image
+    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+    #   with:
+    #     task-definition: ${{ steps.task-def.outputs.task-definition }}
+    #     service: sr-tp-service
+    #     cluster: sr-tp-cluster
