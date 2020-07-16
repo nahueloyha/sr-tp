@@ -19,10 +19,10 @@ Para desarrollar local:
 * Clone: `git@github.com:nahueloyha/sr-tp.git`
 * Build: `docker build -t nahueloyha/tp-sr:$(git rev-parse HEAD) .`
 * Run: `docker run -d --init -p 8080:8080 nahueloyha/tp-sr:$(git rev-parse HEAD)`
-* Access: [127.0.0.1:8080](127.0.0.1:8080)
+* Access: [http://127.0.0.1:8080](127.0.0.1:8080)
 
 Una vez testeado:
 
 * Push: `git add && git commit -m "deploy" && git push` 
-* Deploy: automático con el pipeline CI/CD [acá](https://github.com/nahueloyha/sr-tp/actions))
+* Deploy: automático con el pipeline CI/CD [acá](https://github.com/nahueloyha/sr-tp/actions)
 * Access: [https://sr-tp.nahueloyha.com/](https://sr-tp.nahueloyha.com)

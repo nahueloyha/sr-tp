@@ -50,6 +50,10 @@ jobs:
       # with: 
         # scanArguments: "--regex --entropy=False --max_depth=1"
 
+    # 2.a) Secrets Detection -> Gitleaks
+    - name: Gitleaks
+      uses: zricethezav/gitleaks-action@v1.1.2
+
     # 2.a) Secrets Detection -> Secrets Detector
     - name: "2.a) Secrets Detection -> Secrets Detector"
       uses: evanextreme/detect-secrets-action@1.0.0
