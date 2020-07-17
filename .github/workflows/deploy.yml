@@ -40,6 +40,11 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
+    
+    # Download AWS ECS Task Definition
+    - name: Download AWS ECS Task Definition
+      run: |
+        aws ecs describe-task-definition --task-definition sr-tp-task --query taskDefinition > task-definition.json
 
     # Update AWS ECS Task Definition 
     - name: Fill in the new image ID in the Amazon ECS task definition
